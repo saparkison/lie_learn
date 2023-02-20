@@ -254,20 +254,20 @@ def plot_sphere_func(f, grid='Clenshaw-Curtis', beta=None, alpha=None, colormap=
         f = (f - np.min(f)) / (np.max(f) - np.min(f))
 
     if grid == 'Driscoll-Healy':
-        b = f.shape[0] / 2
+        b = f.shape[0] // 2
     elif grid == 'Clenshaw-Curtis':
-        b = (f.shape[0] - 2) / 2
+        b = (f.shape[0] - 2) // 2
     elif grid == 'SOFT':
         b = f.shape[0] / 2
     elif grid == 'Gauss-Legendre':
         b = (f.shape[0] - 2) / 2
 
     if beta is None or alpha is None:
-        beta, alpha = meshgrid(b=b, grid_type=grid)
+        beta, alpha = meshgrid(b=int(b), grid_type=grid)
 
-    alpha = np.r_[alpha, alpha[0, :][None, :]]
-    beta = np.r_[beta, beta[0, :][None, :]]
-    f = np.r_[f, f[0, :][None, :]]
+    #alpha = np.r_[alpha, alpha[0, :][None, :]]
+    #beta = np.r_[beta, beta[0, :][None, :]]
+    #f = np.r_[f, f[0, :][None, :]]
 
     x = np.sin(beta) * np.cos(alpha)
     y = np.sin(beta) * np.sin(alpha)
@@ -304,9 +304,9 @@ def plot_sphere_func2(f, grid='Clenshaw-Curtis', beta=None, alpha=None, colormap
     if beta is None or alpha is None:
         beta, alpha = meshgrid(b=b, grid_type=grid)
 
-    alpha = np.r_[alpha, alpha[0, :][None, :]]
-    beta = np.r_[beta, beta[0, :][None, :]]
-    f = np.r_[f, f[0, :][None, :]]
+    #alpha = np.r_[alpha, alpha[0, :][None, :]]
+    #beta = np.r_[beta, beta[0, :][None, :]]
+    #f = np.r_[f, f[0, :][None, :]]
 
     x = np.sin(beta) * np.cos(alpha)
     y = np.sin(beta) * np.sin(alpha)
@@ -320,16 +320,15 @@ def plot_sphere_func2(f, grid='Clenshaw-Curtis', beta=None, alpha=None, colormap
     print(x.shape, f.shape)
 
     if f.ndim == 2:
-        f = cm.gray(f)
+        f = cm.jet(f)
         print('2')
 
     # Set the aspect ratio to 1 so our sphere looks spherical
     fig = plt.figure(figsize=plt.figaspect(1.))
     ax = fig.add_subplot(111, projection='3d')
-    ax.plot_surface(x, y, z, rstride=1, cstride=1, facecolors=f ) # cm.gray(f))
+    ax.plot_surface(x, y, z, rstride=1, cstride=1, facecolors=f, alpha=0.3) # cm.gray(f))
     # Turn off the axis planes
-    ax.set_axis_off()
-    plt.show()
+    return fig, ax
 
 
 def _clenshaw_curtis_weights(n):

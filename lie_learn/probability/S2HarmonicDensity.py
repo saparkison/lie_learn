@@ -35,11 +35,11 @@ class S2HarmonicDensity():
 
         if fft is None:
             # Setup a spherical grid and corresponding quadrature weights
-            convention = 'Clenshaw-Curtis'
+            self.convention = 'Clenshaw-Curtis'
             #convention = 'Gauss-Legendre'
 
-            x = S2.meshgrid(b=self.L_max_os, grid_type=convention)
-            w = S2.quadrature_weights(b=self.L_max_os, grid_type=convention)
+            x = S2.meshgrid(b=self.L_max_os, grid_type=self.convention)
+            w = S2.quadrature_weights(b=self.L_max_os, grid_type=self.convention)
             self.fft = S2FFT_NFFT(L_max=self.L_max_os, x=x, w=w)
         else:
             if fft.L_max < self.L_max_os:
@@ -264,3 +264,16 @@ class S2HarmonicDensity():
                                      field='real', normalization='quantum',
                                      condon_shortley=True))
         return S2.integrate(f)
+
+    def plot_eta(self, eta):
+        f = lambda th, ph: self.negative_energy([th, ph], eta)
+        beta, alpha = S2.meshgrid(b=200, grid_type=self.convention)
+        f_val = np.zeros(beta.shape)
+        for i  in range(beta.shape[0]):
+            for j in range(beta.shape[1]):
+                f_val[i, j] = f(beta[i, j], alpha[i, j])
+
+        beta = np.r_[beta, beta[0, :][None, :]]
+        alpha = np.r_[alpha, alpha[0, :][None, :]]
+        f_val = np.r_[f_val, f_val[0, :][None, :]]
+        return S2.plot_sphere_func2(f_val, beta=beta, alpha=alpha)
