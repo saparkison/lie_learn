@@ -2,14 +2,14 @@
 
 import numpy as np
 # from numpy.fft import fft, fft2, ifft, ifft2, fftshift
-from spectral.T1FFT import T1FFT
-from spectral.T2FFT import T2FFT
+from .T1FFT import T1FFT
+from .T2FFT import T2FFT
 from scipy.ndimage.interpolation import map_coordinates
 
-from spectral.FFTBase import FFTBase
-from spectral.fourier_interpolation import FourierInterpolator
+from .FFTBase import FFTBase
+from .fourier_interpolation import FourierInterpolator
 
-import groups.SE2 as SE2
+import lie_learn.groups.SE2 as SE2
 
 def bilinear_interpolate(f, x, y):
     x = np.asarray(x)
@@ -299,11 +299,11 @@ def imrot(f, t):
 def shift_fft(f):
     nx = f.shape[0]
     ny = f.shape[1]
-    p0 = nx / 2
-    q0 = ny / 2
+    p0 = nx // 2
+    q0 = ny // 2
 
-    X, Y = np.meshgrid(np.arange(p0, p0 + nx) % nx,
-                       np.arange(q0, q0 + ny) % ny,
+    X, Y = np.meshgrid(np.arange(p0, p0 + nx, dtype=int) % nx,
+                       np.arange(q0, q0 + ny, dtype=int) % ny,
                        indexing='ij')
     fs = f[X, Y, ...]
 
@@ -312,11 +312,11 @@ def shift_fft(f):
 def shift_ifft(fh):
     nx = fh.shape[0]
     ny = fh.shape[1]
-    p0 = nx / 2
-    q0 = ny / 2
+    p0 = nx // 2
+    q0 = ny // 2
 
-    X, Y = np.meshgrid(np.arange(-p0, -p0 + nx) % nx,
-                       np.arange(-q0, -q0 + ny) % ny,
+    X, Y = np.meshgrid(np.arange(-p0, -p0 + nx, dtype=int) % nx,
+                       np.arange(-q0, -q0 + ny, dtype=int) % ny,
                        indexing='ij')
     fs = T2FFT.synthesize(fh, axes=(0, 1))
 
@@ -492,10 +492,10 @@ class SE2_FFT(FFTBase):
             self.r_max = np.sqrt(self.p0 ** 2 + self.q0 ** 2)
 
             # Precomputation for cartesian-to-polar regridding
-            self.n_samples_r = oversampling_factor * (np.ceil(self.r_max) + 1)
-            self.n_samples_t = oversampling_factor * (np.ceil(2 * np.pi * self.r_max))
+            self.n_samples_r = int(oversampling_factor * (np.ceil(self.r_max) + 1))
+            self.n_samples_t = int(oversampling_factor * (np.ceil(2 * np.pi * self.r_max)))
 
-            r = np.linspace(0, self.r_max, self.n_samples_r, endpoint=True)
+            r = np.linspace(0., self.r_max, self.n_samples_r, endpoint=True)
             theta = np.linspace(0, 2 * np.pi, self.n_samples_t, endpoint=False)
             R, THETA, = np.meshgrid(r, theta, indexing='ij')
 
