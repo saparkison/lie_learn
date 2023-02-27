@@ -15,7 +15,10 @@ def test_SE2FFT():
 
     fi, f1ci, f1pi, f2i, f2fi, fhi = F.synthesize(fh)
 
-    diff = np.sum(np.abs(f-fi))
-
-    assert np.isclose(diff, 0.)
+    assert np.isclose(np.sum(np.abs(fh-fhi)), 0.)
+    assert np.isclose(np.sum(np.abs(f2f-f2fi)), 0.)
+    assert np.isclose(np.sum(np.abs(f2-f2i)), 0.)
+    assert np.isclose(np.sum(np.abs(f1p-f1pi)), 0.)
+    assert np.isclose(np.sum(np.abs(f1c-f1ci)), 0.)
+    assert np.isclose(np.sum(np.abs(f-fi)), 0.)
 
