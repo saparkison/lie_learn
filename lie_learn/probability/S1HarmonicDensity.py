@@ -1,7 +1,7 @@
 
 
 import numpy as np
-from scipy.fftpack import rfft, irfft
+from scipy.fft import rfft, irfft
 from scipy.optimize import fmin_l_bfgs_b
 
 """
@@ -32,7 +32,7 @@ print 'Optimal parameters:', np.round(opt_eta, 2)
 """
 
 
-class S2HarmonicDensity():
+class S1HarmonicDensity():
 
     def __init__(self, L_max, oversampling_factor=2):
 
@@ -54,6 +54,7 @@ class S2HarmonicDensity():
         :return:
         """
 
+        return irfft(np.hstack([[0], eta]), n=self.L_os) * (self.L_os / 2.)
         pass #return eta.dot(sh(self.ls[:, np.newaxis], self.ms[:, np.newaxis],
              #             x[:, 0][np.newaxis, :], x[:, 1][np.newaxis, :],
              #             field='real', normalization='quantum', condon_shortley=True))
@@ -66,7 +67,12 @@ class S2HarmonicDensity():
         :param eta:
         :return:
         """
-        pass
+        negative_energy = irfft(np.hstack([[0], eta]), n=self.L_os) * (self.L_os / 2.)
+        maximum = np.max(negative_energy)
+        unnormalized_moments = rfft(np.exp(negative_energy - maximum)) / (self.L_os / 2.) * np.pi
+        moments = unnormalized_moments[1:eta.size + 1] / unnormalized_moments[0]
+        lnz = np.log(unnormalized_moments[0]) + maximum
+        return moments, lnz
 
     def empirical_moments(self, X, average=True):
         """
@@ -75,7 +81,15 @@ class S2HarmonicDensity():
         :param x: dataset shape (N, 2) for 2 spherical coordinates (theta, phi) per point
         :return: the moments 1/N sum_i=1^N T(x_i)
         """
-        pass
+        empirical_moments = np.zeros(2 * self.L)
+        empirical_moments[self.even] = np.sum(
+            np.cos(np.arange(1, self.L + 1)[np.newaxis, :] * x[:, np.newaxis]), axis=0)
+        empirical_moments[self.odd] = np.sum(
+            np.sin(np.arange(1, self.L + 1)[np.newaxis, :] * x[:, np.newaxis]), axis=0)
+        if average:
+            return empirical_moments / x.shape[0]
+        else:
+            return empirical_moments
 
     def grad_log_p(self, eta, empirical_moments):
         """
@@ -84,14 +98,17 @@ class S2HarmonicDensity():
         :param M:
         :return:
         """
-        pass
+        moments, _ = self.moments(eta)
+        return empirical_moments - moments
 
     def log_p_and_grad(self, eta, empirical_moments):
         """
 
         """
-        pass
-
+        moments, lnZ = self.moments(eta)
+        grad_logp = empirical_moments - moments
+        logp = eta.dot(empirical_moments) - lnZ
+        return logp, grad_logp
 
     def mle_lbfgs(self, empirical_moments, eta_init=None, SigmaInv=None, verbose=True):
 

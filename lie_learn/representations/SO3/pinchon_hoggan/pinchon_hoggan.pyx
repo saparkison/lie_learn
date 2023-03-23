@@ -21,7 +21,7 @@ from lie_learn.broadcasting import generalized_broadcast
 
 FLOAT_TYPE = np.float64
 ctypedef np.float64_t FLOAT_TYPE_t
-INT_TYPE = np.int
+INT_TYPE = np.int_
 ctypedef np.int_t INT_TYPE_t
 
 
@@ -235,7 +235,7 @@ def make_c2b(irreps):
     irrep_begin = 0
     for l in irreps:
 
-        k = int(l) / 2
+        k = int(l) // 2
         if l % 2 == 0:
             # Permutation as defined by Pinchon-Hoggan for 1-based indices,
             # and l = 2 k

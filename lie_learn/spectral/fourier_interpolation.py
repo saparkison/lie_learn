@@ -35,8 +35,8 @@ class FourierInterpolator(object):
 
         # On the computation of the polar FFT
         # Markus Fenn, Stefan Kunis, Daniel Potts
-        r = np.linspace(0, 1. / np.sqrt(2), nr)  # radius = sqrt((0 - 0.5)^2 + (0 - 0.5)^2) = sqrt(0.5) = 1/sqrt(2)
-        t = np.linspace(0, 2 * np.pi, nt, endpoint=False)
+        r = np.linspace(0, 1. / np.sqrt(2), int(nr))  # radius = sqrt((0 - 0.5)^2 + (0 - 0.5)^2) = sqrt(0.5) = 1/sqrt(2)
+        t = np.linspace(0, 2 * np.pi, int(nt), endpoint=False)
         R, T = np.meshgrid(r, t, indexing='ij')
         X = R * np.cos(T)
         Y = R * np.sin(T)
@@ -53,7 +53,6 @@ class FourierInterpolator(object):
         # Perform a regular FFT:
         f_hat = T2FFT.analyze(f)
 
-        print(f_hat)
 
         # Since this equispaced FFT assumes spatial samples in theta_k in [0, 1)
         # [assuming basis functions exp(i 2 pi n theta), not exp(i n theta)],
@@ -61,13 +60,11 @@ class FourierInterpolator(object):
         f_hat *= ((-1) ** np.arange(-np.floor(f.shape[0] / 2), np.ceil(f.shape[0] / 2)))[:, None]
         f_hat *= ((-1) ** np.arange(-np.floor(f.shape[1] / 2), np.ceil(f.shape[1] / 2)))[None, :]
 
-        print(f_hat)
 
         # Use NFFT to evaluate the function defined by these Fourier coefficients at the non-equispaced output grid
         self.nfft.f_hat = f_hat
         f_resampled = self.nfft.trafo().reshape(self.nonequispaced_grid_shape).copy()
 
-        print(f_resampled)
         return f_resampled
 
     def backward(self, f):

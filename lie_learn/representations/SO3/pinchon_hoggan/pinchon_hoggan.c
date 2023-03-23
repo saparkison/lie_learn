@@ -1229,14 +1229,14 @@ typedef npy_longdouble __pyx_t_5numpy_longdouble_t;
  * 
  * FLOAT_TYPE = np.float64
  * ctypedef np.float64_t FLOAT_TYPE_t             # <<<<<<<<<<<<<<
- * INT_TYPE = np.int
+ * INT_TYPE = np.int_
  * ctypedef np.int_t INT_TYPE_t
  */
 typedef __pyx_t_5numpy_float64_t __pyx_t_9lie_learn_15representations_3SO3_14pinchon_hoggan_14pinchon_hoggan_FLOAT_TYPE_t;
 
 /* "lie_learn/representations/SO3/pinchon_hoggan/pinchon_hoggan.pyx":25
  * ctypedef np.float64_t FLOAT_TYPE_t
- * INT_TYPE = np.int
+ * INT_TYPE = np.int_
  * ctypedef np.int_t INT_TYPE_t             # <<<<<<<<<<<<<<
  * 
  * 
@@ -1965,7 +1965,7 @@ static const char __pyx_k_np[] = "np";
 static const char __pyx_k_c2b[] = "c2b";
 static const char __pyx_k_cos[] = "cos";
 static const char __pyx_k_dot[] = "dot";
-static const char __pyx_k_int[] = "int";
+static const char __pyx_k_int[] = "int_";
 static const char __pyx_k_sin[] = "sin";
 static const char __pyx_k_sum[] = "sum";
 static const char __pyx_k_copy[] = "copy";
@@ -4308,7 +4308,7 @@ static PyObject *__pyx_pf_9lie_learn_15representations_3SO3_14pinchon_hoggan_14p
  *     irrep_begin = 0
  *     for l in irreps:             # <<<<<<<<<<<<<<
  * 
- *         k = int(l) / 2
+ *         k = int(l) // 2
  */
   if (likely(PyList_CheckExact(__pyx_v_irreps)) || PyTuple_CheckExact(__pyx_v_irreps)) {
     __pyx_t_4 = __pyx_v_irreps; __Pyx_INCREF(__pyx_t_4); __pyx_t_5 = 0;
@@ -4355,13 +4355,13 @@ static PyObject *__pyx_pf_9lie_learn_15representations_3SO3_14pinchon_hoggan_14p
     /* "lie_learn/representations/SO3/pinchon_hoggan/pinchon_hoggan.pyx":238
  *     for l in irreps:
  * 
- *         k = int(l) / 2             # <<<<<<<<<<<<<<
+ *         k = int(l) // 2             # <<<<<<<<<<<<<<
  *         if l % 2 == 0:
  *             # Permutation as defined by Pinchon-Hoggan for 1-based indices,
  */
     __pyx_t_1 = __Pyx_PyNumber_Int(__pyx_v_l); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 238, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_3 = __Pyx_PyNumber_Divide(__pyx_t_1, __pyx_int_2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 238, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_PyInt_FloorDivideObjC(__pyx_t_1, __pyx_int_2, 2, 0, 0); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 238, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
     __Pyx_XDECREF_SET(__pyx_v_k, __pyx_t_3);
@@ -4369,7 +4369,7 @@ static PyObject *__pyx_pf_9lie_learn_15representations_3SO3_14pinchon_hoggan_14p
 
     /* "lie_learn/representations/SO3/pinchon_hoggan/pinchon_hoggan.pyx":239
  * 
- *         k = int(l) / 2
+ *         k = int(l) // 2
  *         if l % 2 == 0:             # <<<<<<<<<<<<<<
  *             # Permutation as defined by Pinchon-Hoggan for 1-based indices,
  *             # and l = 2 k
@@ -4563,7 +4563,7 @@ static PyObject *__pyx_pf_9lie_learn_15representations_3SO3_14pinchon_hoggan_14p
 
       /* "lie_learn/representations/SO3/pinchon_hoggan/pinchon_hoggan.pyx":239
  * 
- *         k = int(l) / 2
+ *         k = int(l) // 2
  *         if l % 2 == 0:             # <<<<<<<<<<<<<<
  *             # Permutation as defined by Pinchon-Hoggan for 1-based indices,
  *             # and l = 2 k
@@ -4886,7 +4886,7 @@ static PyObject *__pyx_pf_9lie_learn_15representations_3SO3_14pinchon_hoggan_14p
  *     irrep_begin = 0
  *     for l in irreps:             # <<<<<<<<<<<<<<
  * 
- *         k = int(l) / 2
+ *         k = int(l) // 2
  */
   }
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
@@ -6530,7 +6530,7 @@ if (!__Pyx_RefNanny) {
  * 
  * FLOAT_TYPE = np.float64             # <<<<<<<<<<<<<<
  * ctypedef np.float64_t FLOAT_TYPE_t
- * INT_TYPE = np.int
+ * INT_TYPE = np.int_
  */
   __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_np); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 22, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
@@ -6543,7 +6543,7 @@ if (!__Pyx_RefNanny) {
   /* "lie_learn/representations/SO3/pinchon_hoggan/pinchon_hoggan.pyx":24
  * FLOAT_TYPE = np.float64
  * ctypedef np.float64_t FLOAT_TYPE_t
- * INT_TYPE = np.int             # <<<<<<<<<<<<<<
+ * INT_TYPE = np.int_             # <<<<<<<<<<<<<<
  * ctypedef np.int_t INT_TYPE_t
  * 
  */

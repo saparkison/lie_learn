@@ -66,7 +66,7 @@ def spectral_S2_conv(f1, f2, s2_fft=None, so3_fft=None):
     :return:
     """
 
-    b = f1.shape[1] - 1  # TODO we assume a Gauss-Legendre grid for S^2 here
+    b = f1.shape[1] # TODO we assume a Gauss-Legendre grid for S^2 here
 
     if s2_fft is None:
         s2_fft = S2_FT_Naive(L_max=b - 1, grid_type='Gauss-Legendre',
